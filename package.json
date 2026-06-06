@@ -1,0 +1,15 @@
+{
+  "name": "decisiones-que-cuidan",
+  "private": true,
+  "description": "Juego interactivo de repaso — primeros auxilios",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "html-minifier-terser": "^7.2.0",
+    "sharp": "^0.33.5",
+    "terser": "^5.39.0"
+  }
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Juego interactivo de repaso: Decisiones que cuidan - Primeros auxilios en la vida cotidiana">
+    <title>Decisiones que cuidan — Juego de repaso</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/screens.css">
+    <link rel="stylesheet" href="css/missions.css">
+    <link rel="stylesheet" href="css/debrief.css">
+</head>
+<body>
+    <div id="game-app" class="game-app">
+        <header class="game-header" aria-label="Encabezado del juego">
+            <div class="game-brand">
+                <span class="game-brand-mark" aria-hidden="true">FC</span>
+                <div>
+                    <p class="game-brand-kicker">Material interactivo de repaso</p>
+                    <h1 class="game-brand-title">Decisiones que cuidan</h1>
+                </div>
+            </div>
+
+            <div class="game-hud">
+                <button type="button" id="btn-audio" class="btn-icon" aria-pressed="true" aria-label="Desactivar sonido">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M11 5 6 9H3v6h3l5 4V5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        <path class="icon-muted-line" d="M16 9l5 5M21 9l-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <div class="hud-score" id="hud-score" aria-live="polite">Puntos: 0</div>
+            </div>
+        </header>
+
+        <div class="game-progress-wrap" aria-label="Progreso del recorrido">
+            <div class="game-progress-meta">
+                <span id="progress-label">Inicio</span>
+                <span id="progress-step">0 / 5 misiones</span>
+            </div>
+            <div class="game-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div id="progress-fill" class="game-progress-fill"></div>
+            </div>
+        </div>
+
+        <main id="game-screen" class="game-screen" aria-live="polite"></main>
+
+        <footer class="game-footer">
+            <p>Formación Consciente consultora — Nociones básicas de primeros auxilios</p>
+            <p class="game-footer-note">Este recurso no reemplaza la intervención de bomberos, personal médico ni servicios de emergencia.</p>
+        </footer>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/badges.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/mission1.js"></script>
+    <script src="js/mission2.js"></script>
+    <script src="js/mission3.js"></script>
+    <script src="js/mission4.js"></script>
+    <script src="js/mission5.js"></script>
+    <script src="js/missions.js"></script>
+    <script src="js/engine.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
