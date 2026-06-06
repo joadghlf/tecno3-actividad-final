@@ -37,11 +37,11 @@
     background: linear-gradient(135deg, var(--c-teal-dark), var(--c-blue));
     color: var(--c-white);
     border-radius: var(--radius-pill);
-    padding: 10px 16px;
+    padding: 7px 12px;
     font-weight: 900;
-    font-size: 0.92rem;
-    box-shadow: 0 10px 22px rgba(3, 105, 161, 0.2);
-    min-width: 110px;
+    font-size: 0.82rem;
+    box-shadow: 0 8px 18px rgba(3, 105, 161, 0.18);
+    min-width: 96px;
     text-align: center;
 }
 
@@ -49,12 +49,41 @@
 .btn-secondary {
     border: none;
     border-radius: var(--radius-pill);
-    padding: 14px 22px;
-    font-size: 1rem;
+    padding: 10px 16px;
+    font-size: 0.9rem;
     font-weight: 900;
     font-family: var(--font-base);
     cursor: pointer;
     transition: var(--transition);
+}
+
+.btn-copy {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+}
+
+.card {
+    padding: 16px;
+}
+
+.mission-node {
+    padding: 12px;
+    gap: 10px;
+}
+
+.mission-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.mission-info h3 {
+    font-size: 0.95rem;
+}
+
+.mission-info p {
+    font-size: 0.82rem;
 }
 
 .btn-primary {
@@ -140,35 +169,37 @@
 
 .notice {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     align-items: flex-start;
     background: rgba(255, 255, 255, 0.88);
     border: 1px solid rgba(3, 105, 161, 0.14);
-    border-left: 6px solid var(--c-blue);
+    border-left: 5px solid var(--c-blue);
     border-radius: var(--radius-md);
-    padding: 14px 16px;
+    padding: 10px 12px;
     color: var(--c-muted);
-    line-height: 1.5;
+    line-height: 1.45;
+    font-size: 0.88rem;
 }
 
 .screen-title {
-    margin: 0 0 12px;
-    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    margin: 0 0 8px;
+    font-size: clamp(1.2rem, 2.5vw, 1.65rem);
     color: var(--c-teal-dark);
     letter-spacing: -0.03em;
 }
 
 .screen-subtitle {
-    margin: 0 0 16px;
+    margin: 0 0 10px;
     color: var(--c-muted);
-    font-size: 1.05rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
 }
 
 .screen-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 22px;
+    gap: 8px;
+    margin-top: 14px;
 }
 
 .pas-panel {
