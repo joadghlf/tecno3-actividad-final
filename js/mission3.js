@@ -20,15 +20,26 @@ var Mission3 = {
 
     renderOrderPhase: function () {
         var self = this;
+        var total = this.orderItems.length;
 
         var listHtml = this.orderItems.map(function (item, index) {
+            var upDisabled = index === 0 ? ' disabled aria-disabled="true"' : '';
+            var downDisabled = index === total - 1 ? ' disabled aria-disabled="true"' : '';
+
             return ''
-                + '<div class="pas-order-item" data-id="' + item.id + '">'
-                + '<button type="button" class="btn-move" data-dir="up" data-idx="' + index + '" aria-label="Subir">&#8593;</button>'
+                + '<div class="pas-order-item" draggable="true" data-idx="' + index + '" data-id="' + item.id + '">'
+                + '<span class="pas-order-handle" aria-hidden="true" title="Arrastrar para reordenar"></span>'
+                + '<span class="pas-order-position">' + (index + 1) + '</span>'
                 + '<span class="pas-order-letter">' + item.letter + '</span>'
                 + '<div class="pas-order-text"><strong>' + item.title + '</strong><small>' + item.text + '</small></div>'
-                + '<button type="button" class="btn-move" data-dir="down" data-idx="' + index + '" aria-label="Bajar">&#8595;</button>'
-                + '</div>';
+                + '<div class="pas-order-moves">'
+                + '<button type="button" class="btn-move btn-move-up" data-dir="up" data-idx="' + index + '" aria-label="Subir un lugar"' + upDisabled + '>'
+                + '<span class="btn-move-icon" aria-hidden="true">▲</span><span class="btn-move-label">Subir</span>'
+                + '</button>'
+                + '<button type="button" class="btn-move btn-move-down" data-dir="down" data-idx="' + index + '" aria-label="Bajar un lugar"' + downDisabled + '>'
+                + '<span class="btn-move-icon" aria-hidden="true">▼</span><span class="btn-move-label">Bajar</span>'
+                + '</button>'
+                + '</div></div>';
         }).join('');
 
         this.container.innerHTML = ''
@@ -39,12 +50,13 @@ var Mission3 = {
             + '</div>'
             + '<div class="m2-progress-dots"><div class="m2-dot is-active"></div><div class="m2-dot"></div></div>'
             + '<p class="mission-phase-label">Ordená el protocolo</p>'
-            + '<p class="screen-subtitle">Usá las flechas hasta dejar el orden correcto: Proteger, Avisar, Socorrer.</p>'
+            + '<p class="screen-subtitle">Dejá los pasos en este orden: <strong>1 Proteger → 2 Avisar → 3 Socorrer</strong>.</p>'
+            + '<p class="pas-order-hint">Arrastrá las tarjetas por el agarre <span class="pas-order-hint-grip" aria-hidden="true"></span> o usá los botones <strong>Subir</strong> / <strong>Bajar</strong>.</p>'
             + '<div class="pas-chain" id="m3-order-list">' + listHtml + '</div>'
             + '<div class="pas-chain-complete" id="m3-chain-preview">'
-            + '<span class="pas-chain-node">P</span><span class="pas-chain-arrow">&#8594;</span>'
-            + '<span class="pas-chain-node">A</span><span class="pas-chain-arrow">&#8594;</span>'
-            + '<span class="pas-chain-node">S</span>'
+            + '<span class="pas-chain-node">1 · P</span><span class="pas-chain-arrow">→</span>'
+            + '<span class="pas-chain-node">2 · A</span><span class="pas-chain-arrow">→</span>'
+            + '<span class="pas-chain-node">3 · S</span>'
             + '</div>'
             + '<div class="m1-feedback" id="m3-order-feedback"></div>'
             + '<div class="screen-actions">'
@@ -59,15 +71,70 @@ var Mission3 = {
 
         this.container.querySelectorAll('.btn-move').forEach(function (btn) {
             btn.addEventListener('click', function () {
+                if (btn.disabled) return;
                 var idx = parseInt(btn.getAttribute('data-idx'), 10);
                 var dir = btn.getAttribute('data-dir');
                 self.moveOrderItem(idx, dir);
             });
         });
 
+        this.setupOrderDrag();
+
         document.getElementById('m3-check-order').addEventListener('click', function () {
             self.checkOrder();
         });
+    },
+
+    setupOrderDrag: function () {
+        var self = this;
+        var list = document.getElementById('m3-order-list');
+        if (!list) return;
+
+        var dragIndex = null;
+
+        list.querySelectorAll('.pas-order-item').forEach(function (item) {
+            item.addEventListener('dragstart', function (e) {
+                dragIndex = parseInt(item.getAttribute('data-idx'), 10);
+                item.classList.add('is-dragging');
+                if (e.dataTransfer) {
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/plain', String(dragIndex));
+                }
+            });
+
+            item.addEventListener('dragend', function () {
+                item.classList.remove('is-dragging');
+                list.querySelectorAll('.pas-order-item').forEach(function (el) {
+                    el.classList.remove('is-drag-over');
+                });
+                dragIndex = null;
+            });
+
+            item.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+                item.classList.add('is-drag-over');
+            });
+
+            item.addEventListener('dragleave', function () {
+                item.classList.remove('is-drag-over');
+            });
+
+            item.addEventListener('drop', function (e) {
+                e.preventDefault();
+                item.classList.remove('is-drag-over');
+                var dropIndex = parseInt(item.getAttribute('data-idx'), 10);
+                if (dragIndex === null || dragIndex === dropIndex) return;
+                self.reorderItems(dragIndex, dropIndex);
+            });
+        });
+    },
+
+    reorderItems: function (fromIndex, toIndex) {
+        var item = this.orderItems.splice(fromIndex, 1)[0];
+        this.orderItems.splice(toIndex, 0, item);
+        GameAudio.click();
+        this.renderOrderPhase();
     },
 
     moveOrderItem: function (index, dir) {
