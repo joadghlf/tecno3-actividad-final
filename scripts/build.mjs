@@ -134,7 +134,7 @@ async function buildImages() {
 
   for (const relPath of IMAGE_FILES) {
     const inputPath = path.join(ROOT, relPath);
-    const outPath = path.join(DIST, relPath);
+    const outPath = path.join(DOCS, relPath);
     ensureDir(path.dirname(outPath));
 
     await sharp(inputPath)
@@ -148,41 +148,26 @@ async function buildImages() {
   return total;
 }
 
-function writeDeployReadme() {
-  const content = `# Decisiones que cuidan — Build de producción
+function writeNoJekyll() {
+  fs.writeFileSync(path.join(DOCS, '.nojekyll'), '');
+}
 
-Esta carpeta se genera con \`npm run build\`. Es la versión optimizada para publicar en GitHub Pages o embeber en Moodle.
+async function buildFavicon() {
+  const svgPath = path.join(ROOT, 'favicon.svg');
+  fs.copyFileSync(svgPath, path.join(DOCS, 'favicon.svg'));
 
-## GitHub Pages
+  await sharp(svgPath)
+    .resize(32, 32)
+    .png()
+    .toFile(path.join(DOCS, 'favicon.ico'));
 
-1. Subí el contenido de \`dist/\` a la raíz del repo (o configurá Pages desde la carpeta \`/dist\`).
-2. Activá GitHub Pages en el branch correspondiente.
-
-## Embeber en Moodle
-
-\`\`\`html
-<iframe src="https://TU-USUARIO.github.io/TU-REPO/"
-        width="100%" height="720"
-        style="border:0;border-radius:12px;"
-        title="Decisiones que cuidan"></iframe>
-\`\`\`
-
-## Regenerar build
-
-Desde la carpeta del proyecto fuente:
-
-\`\`\`bash
-npm install
-npm run build
-\`\`\`
-`;
-
-  fs.writeFileSync(path.join(DIST, 'README.md'), content);
+  return fs.statSync(path.join(DOCS, 'favicon.ico')).size
+    + fs.statSync(path.join(DOCS, 'favicon.svg')).size;
 }
 
 async function main() {
-  fs.rmSync(DIST, { recursive: true, force: true });
-  ensureDir(DIST);
+  fs.rmSync(DOCS, { recursive: true, force: true });
+  ensureDir(DOCS);
 
   const sourceCss = sumSize(CSS_FILES);
   const sourceJs = sumSize(JS_FILES);
@@ -193,19 +178,20 @@ async function main() {
   const jsSize = await buildJs();
   const htmlSize = await buildHtml();
   const imageSize = await buildImages();
-  writeDeployReadme();
+  await buildFavicon();
+  writeNoJekyll();
 
   const sourceTotal = sourceCss + sourceJs + sourceHtml + sourceImages;
-  const distTotal = cssSize + jsSize + htmlSize + imageSize;
+  const docsTotal = cssSize + jsSize + htmlSize + imageSize;
 
-  console.log('Build completado → dist/');
+  console.log('Build completado → docs/');
   console.log('');
   console.log('CSS :', formatBytes(sourceCss), '→', formatBytes(cssSize));
   console.log('JS  :', formatBytes(sourceJs), '→', formatBytes(jsSize));
   console.log('HTML:', formatBytes(sourceHtml), '→', formatBytes(htmlSize));
   console.log('IMG :', formatBytes(sourceImages), '→', formatBytes(imageSize));
   console.log('');
-  console.log('Total consumible:', formatBytes(distTotal), '(antes:', formatBytes(sourceTotal) + ')');
+  console.log('Total consumible:', formatBytes(docsTotal), '(antes:', formatBytes(sourceTotal) + ')');
 }
 
 main().catch(function (err) {
