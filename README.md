@@ -65,14 +65,18 @@ git push -u origin main
 
 ### 3. Embeber en Moodle
 
+Usá este código (altura fija, sin doble scroll):
+
 ```html
-<iframe src="https://TU-USUARIO.github.io/NOMBRE-DEL-REPO/"
-        width="100%" height="720"
-        style="border:0;border-radius:12px;"
+<iframe src="https://TU-USUARIO.github.io/NOMBRE-DEL-REPO/?embed=1"
+        width="100%"
+        height="680"
+        style="border:0;display:block;max-width:100%;"
+        scrolling="no"
         title="Decisiones que cuidan"></iframe>
 ```
 
-Incluí esa URL en el PDF de entrega y en la actividad correspondiente del LMS.
+El juego detecta el iframe y activa **modo embebido**: ocupa todo el espacio, el scroll queda solo en la zona de actividad y el footer se compacta.
 
 ---
 

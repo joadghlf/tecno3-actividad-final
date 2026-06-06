@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var isEmbedded = window.self !== window.top || params.get('embed') === '1';
+
+    if (isEmbedded) {
+        document.documentElement.classList.add('is-embedded');
+    }
+
     GameUI.init();
     GameUI.refresh();
 

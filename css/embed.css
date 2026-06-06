@@ -1,0 +1,191 @@
+/* Modo embebido (Moodle / iframe) */
+html.is-embedded,
+html.is-embedded body {
+    height: 100%;
+    overflow: hidden;
+}
+
+html.is-embedded body {
+    padding: 0;
+    background: #f8fafc;
+}
+
+html.is-embedded .game-app {
+    max-width: none;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 8px 10px 6px;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+html.is-embedded .game-header {
+    margin-bottom: 6px;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+html.is-embedded .game-brand-kicker {
+    display: none;
+}
+
+html.is-embedded .game-brand-title {
+    font-size: 1rem;
+}
+
+html.is-embedded .game-brand-mark {
+    width: 34px;
+    height: 34px;
+    font-size: 0.7rem;
+}
+
+html.is-embedded .btn-icon {
+    width: 36px;
+    height: 36px;
+}
+
+html.is-embedded .hud-score {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    min-width: 84px;
+}
+
+html.is-embedded .game-progress-wrap {
+    margin-bottom: 6px;
+    flex-shrink: 0;
+}
+
+html.is-embedded .game-progress-meta {
+    font-size: 0.72rem;
+    margin-bottom: 4px;
+}
+
+html.is-embedded .game-progress-bar {
+    height: 8px;
+}
+
+html.is-embedded .game-screen {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+html.is-embedded .game-footer {
+    margin-top: 6px;
+    padding-top: 6px;
+    flex-shrink: 0;
+    font-size: 0.68rem;
+}
+
+html.is-embedded .game-footer-note {
+    display: none;
+}
+
+html.is-embedded .game-footer p {
+    margin: 0;
+}
+
+html.is-embedded .screen-subtitle {
+    margin-bottom: 8px;
+    font-size: 0.84rem;
+}
+
+html.is-embedded .screen-actions {
+    margin-top: 10px;
+}
+
+html.is-embedded .btn-primary,
+html.is-embedded .btn-secondary {
+    padding: 8px 14px;
+    font-size: 0.84rem;
+}
+
+html.is-embedded .mission-top {
+    margin-bottom: 6px;
+}
+
+html.is-embedded .mission-top h2 {
+    font-size: 1rem;
+}
+
+html.is-embedded .mission-phase-label {
+    margin-bottom: 6px;
+    font-size: 0.75rem;
+}
+
+html.is-embedded .m1-stage {
+    min-height: 120px;
+    margin-bottom: 8px;
+}
+
+html.is-embedded .m1-card-slot {
+    min-height: 90px;
+}
+
+html.is-embedded .situation-card {
+    padding: 10px 12px;
+}
+
+html.is-embedded .situation-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 6px;
+}
+
+html.is-embedded .situation-card h3 {
+    font-size: 0.92rem;
+}
+
+html.is-embedded .situation-card p {
+    font-size: 0.8rem;
+}
+
+html.is-embedded .portal-btn {
+    min-height: 68px;
+    padding: 10px;
+}
+
+html.is-embedded .portal-btn strong {
+    font-size: 0.92rem;
+}
+
+html.is-embedded .portal-btn span {
+    font-size: 0.72rem;
+}
+
+html.is-embedded .mission-help {
+    display: none;
+}
+
+html.is-embedded .pas-order-item {
+    padding: 6px 8px;
+}
+
+html.is-embedded .pas-order-text small {
+    -webkit-line-clamp: 1;
+}
+
+html.is-embedded .club-scene-v2-floor,
+html.is-embedded .plaza-scene-v2-floor {
+    min-height: 130px;
+}
+
+html.is-embedded .m5-scene-live {
+    min-height: 140px;
+}
+
+html.is-embedded .m5-layout {
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+html.is-embedded .kit-bag-zone {
+    min-height: 160px;
+}

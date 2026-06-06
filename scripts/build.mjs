@@ -17,7 +17,8 @@ const CSS_FILES = [
   'css/animations.css',
   'css/screens.css',
   'css/missions.css',
-  'css/debrief.css'
+  'css/debrief.css',
+  'css/embed.css'
 ];
 
 const JS_FILES = [
