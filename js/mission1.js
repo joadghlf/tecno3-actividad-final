@@ -137,7 +137,7 @@ var Mission1 = {
         this.container.querySelectorAll('[data-answer]').forEach(function (b) { b.disabled = true; });
 
         feedback.className = 'm1-feedback is-show ' + (isCorrect ? 'is-ok' : 'is-bad');
-        feedback.textContent = isCorrect ? ('+2 puntos · ' + situation.feedback) : ('Repasá: ' + situation.feedback);
+        feedback.textContent = isCorrect ? ('+2 puntos · ' + situation.feedback) : ('−1 punto · Repasá: ' + situation.feedback);
 
         if (isCorrect) {
             this.correct++;
@@ -152,11 +152,12 @@ var Mission1 = {
             card.classList.add(isEmergencyPortal ? 'is-exit-right' : 'is-exit-left');
         } else {
             this.streak = 0;
+            this.missionPoints = GameState.applyPenalty(this.missionPoints, 1);
             GameAudio.error();
             card.classList.add('is-shake');
         }
 
-        GameUI.updateHud();
+        GameUI.updateHud(this.missionPoints);
 
         setTimeout(function () {
             self.locked = false;
@@ -167,7 +168,7 @@ var Mission1 = {
 
     renderVictory: function () {
         var self = this;
-        var bonus = this.correct >= 5 ? 4 : 2;
+        var bonus = this.correct >= 6 ? 4 : this.correct >= 4 ? 2 : this.correct >= 2 ? 1 : 0;
         this.missionPoints += bonus;
 
         this.container.innerHTML = ''

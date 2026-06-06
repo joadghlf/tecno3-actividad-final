@@ -17,6 +17,10 @@ var GameState = {
         this.audioEnabled = audio;
     },
 
+    applyPenalty: function (points, amount) {
+        return Math.max(0, (points || 0) - (amount || 0));
+    },
+
     completeMission: function (missionId, points) {
         var wasNew = this.completedMissions.indexOf(missionId) === -1;
 

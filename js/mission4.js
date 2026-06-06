@@ -4,6 +4,7 @@ var Mission4 = {
     risksFound: [],
     selectedPerson: null,
     infoChecked: {},
+    finalChoiceType: null,
     missionPoints: 0,
     locked: false,
 
@@ -14,6 +15,7 @@ var Mission4 = {
         this.selectedPerson = null;
         this.infoChecked = {};
         this.missionPoints = 0;
+        this.finalChoiceType = null;
         this.locked = false;
         this.renderScenePhase();
     },
@@ -141,7 +143,7 @@ var Mission4 = {
         list.appendChild(item);
 
         document.getElementById('m4-risk-count').textContent = this.risksFound.length + '/' + GAME_DATA.mission4.sceneRisks.length;
-        GameUI.updateHud();
+        GameUI.updateHud(this.missionPoints);
 
         if (this.risksFound.length >= GAME_DATA.mission4.sceneRisks.length) {
             var self = this;
@@ -248,11 +250,12 @@ var Mission4 = {
             GameAudio.success();
             this.missionPoints += 4;
         } else {
+            this.missionPoints = GameState.applyPenalty(this.missionPoints, 2);
             GameAudio.error();
         }
 
         this.checkCallReady();
-        GameUI.updateHud();
+        GameUI.updateHud(this.missionPoints);
     },
 
     toggleInfo: function (infoId, chipEl) {
@@ -354,26 +357,33 @@ var Mission4 = {
         feedback.textContent = choice.feedback;
 
         this.missionPoints += choice.points;
+        this.finalChoiceType = choice.type;
 
         if (choice.type === 'safe') {
             GameAudio.success();
         } else {
+            this.missionPoints = GameState.applyPenalty(this.missionPoints, 1);
             GameAudio.error();
         }
 
         document.getElementById('m4-finish').disabled = false;
-        GameUI.updateHud();
+        GameUI.updateHud(this.missionPoints);
     },
 
     renderVictory: function () {
         var self = this;
-        this.missionPoints += 3;
+        var closingBonus = this.finalChoiceType === 'safe' ? 3 : 0;
+        this.missionPoints += closingBonus;
+
+        var closingMsg = closingBonus
+            ? 'Evaluaste riesgos, activaste ayuda y elegiste una acción segura.'
+            : 'Completaste la misión. Repasá la decisión final para reforzar un acompañamiento seguro.';
 
         this.container.innerHTML = ''
             + '<div class="mission-victory animate-in">'
             + '<div class="mission-victory-burst">SOS</div>'
             + '<h3>Escena bajo control</h3>'
-            + '<p>Evaluaste riesgos, activaste ayuda y elegiste una acción segura. Sumaste <strong>' + this.missionPoints + '</strong> puntos formativos.</p>'
+            + '<p>' + closingMsg + ' Sumaste <strong>' + this.missionPoints + '</strong> puntos formativos.</p>'
             + '<div class="screen-actions" style="justify-content:center">'
             + '<button type="button" class="btn-primary" id="m4-done">Continuar al mapa</button>'
             + '</div></div>';

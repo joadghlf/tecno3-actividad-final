@@ -161,9 +161,11 @@ var Mission3 = {
 
         if (!correct) {
             this.attempts++;
+            this.missionPoints = GameState.applyPenalty(this.missionPoints, 2);
             feedback.className = 'm1-feedback is-show is-bad';
-            feedback.textContent = 'Todavía no es el orden PAS. Recordá: primero Proteger, después Avisar y por último Socorrer.';
+            feedback.textContent = '−2 puntos · Todavía no es el orden PAS. Recordá: primero Proteger, después Avisar y por último Socorrer.';
             GameAudio.error();
+            GameUI.updateHud(this.missionPoints);
             this.container.querySelectorAll('.pas-order-item').forEach(function (el) {
                 el.classList.add('is-wrong-slot');
             });
@@ -279,12 +281,13 @@ var Mission3 = {
 
         if (!isCorrect) {
             GameAudio.error();
+            this.attempts++;
+            this.missionPoints = GameState.applyPenalty(this.missionPoints, 1);
+            GameUI.updateHud(this.missionPoints);
             zoneEl.parentElement.classList.add('pas-zone-chip-wrong');
-            var self = this;
             setTimeout(function () {
                 zoneEl.parentElement.classList.remove('pas-zone-chip-wrong');
             }, 450);
-            this.attempts++;
             return;
         }
 
@@ -301,7 +304,7 @@ var Mission3 = {
         var chip = this.container.querySelector('[data-id="' + actionId + '"]');
         if (chip) chip.remove();
 
-        GameUI.updateHud();
+        GameUI.updateHud(this.missionPoints);
 
         if (Object.keys(this.placedActions).length >= GAME_DATA.mission3.actions.length) {
             var self = this;
@@ -311,7 +314,7 @@ var Mission3 = {
 
     renderVictory: function () {
         var self = this;
-        var bonus = this.attempts <= 2 ? 4 : 2;
+        var bonus = this.attempts === 0 ? 4 : this.attempts <= 3 ? 2 : 0;
         this.missionPoints += bonus;
 
         this.container.innerHTML = ''

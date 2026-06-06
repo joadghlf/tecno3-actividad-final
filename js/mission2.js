@@ -123,8 +123,10 @@ var Mission2 = {
 
         if (!isCorrect) {
             el.classList.add('is-wrong-flash');
-            GameAudio.error();
             this.wrongClicks++;
+            this.missionPoints = GameState.applyPenalty(this.missionPoints, 1);
+            GameAudio.error();
+            GameUI.updateHud(this.missionPoints);
             return;
         }
 
@@ -140,7 +142,7 @@ var Mission2 = {
         stored.appendChild(tag);
 
         document.getElementById('m2-kit-count').textContent = this.kitStored.length + '/' + GAME_DATA.mission2.kitRequired;
-        GameUI.updateHud();
+        GameUI.updateHud(this.missionPoints);
 
         if (this.kitStored.length >= GAME_DATA.mission2.kitRequired) {
             var self = this;
@@ -264,7 +266,7 @@ var Mission2 = {
         list.appendChild(item);
 
         document.getElementById('m2-risk-count').textContent = this.risksFound.length + '/' + GAME_DATA.mission2.risks.length;
-        GameUI.updateHud();
+        GameUI.updateHud(this.missionPoints);
 
         if (this.risksFound.length >= GAME_DATA.mission2.risks.length) {
             var self = this;
@@ -274,7 +276,7 @@ var Mission2 = {
 
     renderVictory: function () {
         var self = this;
-        var bonus = this.wrongClicks === 0 ? 4 : 2;
+        var bonus = this.wrongClicks === 0 ? 4 : this.wrongClicks <= 2 ? 2 : 0;
         this.missionPoints += bonus;
 
         this.container.innerHTML = ''

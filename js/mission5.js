@@ -41,15 +41,7 @@ var Mission5 = {
             + '<div class="mission-meta"><span class="meta-pill">Simulador final</span></div>'
             + '</div>'
             + '<div class="m5-layout">'
-            + '<div class="m5-scene-panel">'
-            + '<div class="m5-scene-live is-alert">'
-            + '<div class="m5-scene-crowd"></div>'
-            + '<div class="m5-scene-victim"></div>'
-            + '<div class="m5-scene-bottle"></div>'
-            + '<div class="m5-scene-chair"></div>'
-            + '</div>'
-            + this.renderStatusList()
-            + '</div>'
+            + this.renderScenePanel()
             + '<div class="m5-decision-panel">'
             + '<p class="mission-phase-label">Briefing del caso</p>'
             + '<div class="m5-context">' + intro.text + '</div>'
@@ -89,14 +81,16 @@ var Mission5 = {
     renderScenePanel: function () {
         var secured = this.statusDone.protect;
         var helped = this.statusDone.help;
+        var alertCls = this.phase === 'intro' || this.round === 0 ? ' is-alert' : '';
 
         return ''
             + '<div class="m5-scene-panel">'
-            + '<div class="m5-scene-live' + (this.round === 0 ? ' is-alert' : '') + '">'
-            + '<div class="m5-scene-crowd"></div>'
-            + '<div class="m5-scene-victim' + (helped ? ' is-helped' : '') + '"></div>'
-            + '<div class="m5-scene-bottle' + (secured ? ' is-secured' : '') + '"></div>'
-            + '<div class="m5-scene-chair' + (secured ? ' is-secured' : '') + '"></div>'
+            + '<div class="m5-scene-live' + alertCls + '">'
+            + '<div class="m5-scene-banner">Club comunitario</div>'
+            + '<span class="m5-scene-marker m5-scene-crowd">Gente cerca</span>'
+            + '<span class="m5-scene-marker m5-scene-victim' + (helped ? ' is-helped' : '') + '">Persona mareada</span>'
+            + '<span class="m5-scene-marker m5-scene-bottle' + (secured ? ' is-secured' : '') + '">Botella rota</span>'
+            + '<span class="m5-scene-marker m5-scene-chair' + (secured ? ' is-secured' : '') + '">Silla caída</span>'
             + '</div>'
             + this.renderStatusList()
             + '</div>';
@@ -198,10 +192,13 @@ var Mission5 = {
 
         if (option.type === 'safe') GameAudio.success();
         else if (option.type === 'partial') GameAudio.partial();
-        else GameAudio.error();
+        else {
+            this.missionPoints = GameState.applyPenalty(this.missionPoints, 1);
+            GameAudio.error();
+        }
 
         this.updateSceneVisuals();
-        GameUI.updateHud();
+        GameUI.updateHud(this.missionPoints);
         nextBtn.disabled = false;
         nextBtn.focus();
     },
@@ -222,7 +219,7 @@ var Mission5 = {
 
     renderFinal: function () {
         var self = this;
-        var bonus = 4;
+        var bonus = this.decisionScore >= 7 ? 4 : this.decisionScore >= 5 ? 2 : this.decisionScore >= 2 ? 1 : 0;
         this.missionPoints += bonus;
 
         var keysHtml = GAME_DATA.mission5.keyIdeas.map(function (idea) {

@@ -39,7 +39,7 @@ var GAME_DATA = {
     ],
 
     debrief: {
-        scoreThresholds: { high: 75, mid: 45 },
+        scoreThresholds: { high: 85, mid: 55 },
         scoreMessages: {
             high: 'Excelente recorrido. Tus decisiones priorizaron la seguridad, la activación de ayuda y el acompañamiento responsable.',
             mid: 'Buen trabajo. Repasaste los contenidos centrales y reconociste varias acciones seguras. Podés reintentar para reforzar PAS.',

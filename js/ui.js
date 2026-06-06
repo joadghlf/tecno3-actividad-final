@@ -15,8 +15,9 @@ var GameUI = {
         this.hudScore = document.getElementById('hud-score');
     },
 
-    updateHud: function () {
-        this.hudScore.textContent = 'Puntos: ' + GameState.score;
+    updateHud: function (sessionPoints) {
+        var total = GameState.score + (sessionPoints || 0);
+        this.hudScore.textContent = 'Puntos: ' + total;
 
         var completed = GameState.completedMissions.length;
         var total = GAME_DATA.missions.length;
